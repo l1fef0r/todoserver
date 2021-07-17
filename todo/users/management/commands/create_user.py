@@ -25,3 +25,5 @@ class Command(BaseCommand):
                 UserProfile.objects.create_superuser(username=username, email=get_random_string()+'@', password='123')
             else:
                 UserProfile.objects.create_user(username=username, email=get_random_string()+'@', password='123')
+
+
