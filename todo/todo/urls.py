@@ -18,4 +18,5 @@ urlpatterns = [
     path('api/users/<int:pk>/', UserDetail.as_view()),
     path('api/projects/<int:pk>', ProjectDetail.as_view()),
     path('api/todos/<int:pk>', TodoDetail.as_view()),
+    path('api/todos/<int:pk>', TodoViewSet.as_view({'get': 'list'})),
 ]

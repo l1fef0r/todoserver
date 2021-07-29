@@ -1,7 +1,8 @@
-
+from django.shortcuts import get_list_or_404
 from rest_framework import status, mixins, generics, filters
 
 from rest_framework.response import Response
+from rest_framework.utils import json
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
@@ -61,10 +62,7 @@ class TodoDetail(APIView):
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
-    def delete(self, request, pk=None): #!!!!!!!!!!!!!!!!!!!
-        content = self.get_object()
-        content.open = False
-        return Response(content.data)
+
 
 class TodoViewSet(ModelViewSet):
     serializer_class = TodoSerializer
@@ -74,9 +72,9 @@ class TodoViewSet(ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['project']
 
-    # def get_queryset(self):
-    #     project = self.request.query_params('project', None)
-    #     if project:
-    #         return Todo.object.filter(project=project)
-    #     return Todo.object.all()
+    def destroy(self, request, pk):
+        tod = self.queryset.get(pk=int(pk))
+        data = TodoSerializer(tod).data
+        data['open'] = False
+        return Response(data)
 
