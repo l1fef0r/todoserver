@@ -19,7 +19,4 @@ class TodoSerializer(ModelSerializer):
         model = Todo
         fields = '__all__'
 
-    def update(self, instance, validated_data):
-        # Update the Foo instance
-        return instance
 

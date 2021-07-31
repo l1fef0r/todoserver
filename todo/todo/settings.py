@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-p=+9%ii2#@e9wp0e=m1gg4xp=7$==%i6uhu1vzkt1x0=w+@ajx
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
 CORS_ALLOWED_ORIGINS = [
 'http://127.0.0.1:3000',
 'http://localhost:3000',
@@ -43,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'users',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +61,30 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'todo.urls'
+
+# from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, DjangoModelPermissionsOrAnonReadOnly, DjangoModelPermissions
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication, TokenAuthentication
+
+REST_FRAMEWORK = {
+     'DEFAULT_RENDERER_CLASSES': [
+         'rest_framework.renderers.JSONRenderer',
+         'rest_framework.renderers.BrowsableAPIRenderer'
+     ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'PAGE_SIZE': 100,
+}
+
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
 
 TEMPLATES = [
     {
@@ -129,6 +156,9 @@ STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+AUTHENTICATION_BACKENDS = (
+    ('django.contrib.auth.backends.ModelBackend'),
+)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
