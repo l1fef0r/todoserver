@@ -1,8 +1,8 @@
-from django.shortcuts import get_list_or_404
+
 from rest_framework import status, mixins, generics, filters
 
 from rest_framework.response import Response
-from rest_framework.utils import json
+
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
@@ -10,8 +10,12 @@ from .models import UserProfile, Todo, Project
 from .serializers import UserSerializer, TodoSerializer, ProjectSerializer
 from rest_framework.pagination import LimitOffsetPagination
 
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, DjangoModelPermissionsOrAnonReadOnly, DjangoModelPermissions
+
+
 class ProjectPagination(LimitOffsetPagination):
     default_limit = 10
+
 class TodoPagination(LimitOffsetPagination):
     default_limit = 20
 
@@ -21,8 +25,14 @@ class UserView(APIView):
 
         users = UserProfile.objects.all()
         serializer = UserSerializer(users, many=True)
+        permission_classes = [IsAdminUser]
 
         return Response(serializer.data)
+
+class UserViewSet(ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = UserProfile.objects.all()
+
 
 class UserDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = UserProfile.objects.all()
