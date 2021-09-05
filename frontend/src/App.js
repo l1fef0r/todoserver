@@ -18,6 +18,7 @@ const Page404 = ({location}) => {
         Page {location.pathname} not found.
     </div>
 }
+
 class App extends React.Component {
     constructor(props) {
             super(props)
@@ -29,7 +30,34 @@ class App extends React.Component {
             }
     }
 
-    componentDidMount() {
+  set_token(token) {
+    const cookies = new Cookies()
+    cookies.set('token', token)
+    this.setState({'token': token})
+  }
+
+  is_authenticated() {
+    return this.state.token != ''
+  }
+
+  logout() {
+    this.set_token('')
+  }
+
+  get_token_from_storage() {
+    const cookies = new Cookies()
+    const token = cookies.get('token')
+    this.setState({'token': token})
+  }
+
+  get_token(login, password) {
+    axios.post('http://127.0.0.1:8000/api-token-auth/', {username: login, password: password})
+    .then(response => {
+        this.set_token(response.data['token'])
+    }).catch(error => alert('Неверный логин или пароль'))
+  }
+
+  load_data() {
         axios.get('http://127.0.0.1:8000/api/users/')
         .then(
             response => {
@@ -67,21 +95,11 @@ class App extends React.Component {
             error =>  console.log(error)
         )
     }
-    get_token(login, password) {
-        axios.post('http://127.0.0.1:8000/api-token-auth/', {username: login, password: password})
-        .then(
-            response => {
-                  const cookie = new Cookies()
-                  cookie.set('token', response.data.token)
-                  console.log(cookie.get('token'))
-//                localStorage.setItem('token', response.data.token)
 
-                console.log(response.data)
-            }
-        ).catch(
-            error => alert('Неверный логин или пароль')
-        )
-    }
+  componentDidMount() {
+    this.get_token_from_storage()
+    this.load_data()
+  }
 
     render() {
         return (
@@ -99,7 +117,7 @@ class App extends React.Component {
                         <Link to='/projects'>Projects</Link>
                     </li>
                     <li>
-                        <Link to='/login'>login</Link>
+                        {this.is_authenticated() ? <button onClick={()=>this.logout()}>Logout</button> : <Link to='/login'>Login</Link>}
                     </li>
                 </ul>
             </nav>
