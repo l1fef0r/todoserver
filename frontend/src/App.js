@@ -10,6 +10,7 @@ import LoginForm from './components/LoginForm.js'
 import MenuList from './components/menu.js'
 import Footer from './components/footer.js'
 import {HashRouter, BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 
 
 const Page404 = ({location}) => {
@@ -24,6 +25,7 @@ class App extends React.Component {
                 'users': [],
                 'projects': [],
                 'todos': [],
+                'token': '',
             }
     }
 
@@ -66,11 +68,14 @@ class App extends React.Component {
         )
     }
     get_token(login, password) {
-        console.log(login + ' ' + password)
         axios.post('http://127.0.0.1:8000/api-token-auth/', {username: login, password: password})
         .then(
             response => {
-                localStorage.setItem('token', response.data.token)
+                  const cookie = new Cookies()
+                  cookie.set('token', response.data.token)
+                  console.log(cookie.get('token'))
+//                localStorage.setItem('token', response.data.token)
+
                 console.log(response.data)
             }
         ).catch(
