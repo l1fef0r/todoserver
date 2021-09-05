@@ -3,6 +3,7 @@ import React from 'react'
 const UserItem = ({user}) => {
     return (
         <tr>
+            <td>{user.id}</td>
             <td>{user.first_name}</td>
             <td>{user.last_name}</td>
             <td>{user.email}</td>
@@ -14,6 +15,9 @@ const UserItem = ({user}) => {
 const UserList = ({users}) => {
     return (
         <table>
+            <th>
+                id
+            </th>
             <th>
                 First name
             </th>

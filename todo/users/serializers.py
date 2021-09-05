@@ -9,6 +9,7 @@ class UserSerializer(ModelSerializer):
         fields = ('username', 'password', 'email', 'first_name', 'last_name')
 
 
+
 class ProjectSerializer(ModelSerializer):
     class Meta:
         model = Project
@@ -19,7 +20,4 @@ class TodoSerializer(ModelSerializer):
         model = Todo
         fields = '__all__'
 
-    def update(self, instance, validated_data):
-        # Update the Foo instance
-        return instance
 
