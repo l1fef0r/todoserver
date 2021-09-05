@@ -9,6 +9,7 @@ class UserSerializer(ModelSerializer):
         fields = ('username', 'password', 'email', 'first_name', 'last_name')
 
 
+
 class ProjectSerializer(ModelSerializer):
     class Meta:
         model = Project

@@ -25,14 +25,13 @@ class UserView(APIView):
 
         users = UserProfile.objects.all()
         serializer = UserSerializer(users, many=True)
-        permission_classes = [IsAdminUser]
 
         return Response(serializer.data)
 
 class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     queryset = UserProfile.objects.all()
-
+    permission_classes = [IsAdminUser]
 
 class UserDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
     queryset = UserProfile.objects.all()

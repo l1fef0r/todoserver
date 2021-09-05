@@ -17,7 +17,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/users/', UserView.as_view()),
     path('api/users/<int:pk>/', UserDetail.as_view()),
-    path('api/projects/<int:pk>', ProjectDetail.as_view()),
-    path('api/todos/<int:pk>', TodoDetail.as_view()),
-    path('api/todos/<int:pk>', TodoViewSet.as_view({'get': 'list'})),
+    path('api/projects/<int:pk>/', ProjectDetail.as_view()),
+    path('api/todos/<int:pk>/', TodoDetail.as_view()),
+    path('api/todos/<int:pk>/', TodoViewSet.as_view({'get': 'list'})),
 ]
