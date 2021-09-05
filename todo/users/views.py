@@ -1,5 +1,5 @@
 
-from rest_framework import status, mixins, generics, filters
+from rest_framework import status, mixins, generics, filters, permissions
 
 from rest_framework.response import Response
 
@@ -45,6 +45,7 @@ class UserDetail(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, generics.Ge
 
 
 class ProjectViewSet(ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
 
@@ -74,6 +75,7 @@ class TodoDetail(APIView):
 
 
 class TodoViewSet(ModelViewSet):
+#    permission_classes = [permissions.IsAuthenticated]
     serializer_class = TodoSerializer
     queryset = Todo.objects.all()
     pagination_class = TodoPagination
